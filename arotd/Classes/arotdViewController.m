@@ -12,20 +12,25 @@
 
 
 -(id) init {
-	self = [super init];
-	
-	webView = [[UIWebView alloc] initWithFrame:CGRectMake(.0, 20.0, 320.0, 480.0 - 20.0)];
-    webView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
-	webView.delegate = self;
-	webView.scalesPageToFit = YES;
-	[webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index"
-																											 ofType:@"html"
-																										inDirectory:@"web"]]
-										  cachePolicy:NSURLRequestUseProtocolCachePolicy 
-									  timeoutInterval:20.0]];
-	[self.view addSubview:splashView];
-	return self;
+	return [super init];
 }
+
+@synthesize webView;
+@synthesize splashView;
+
+- (void)viewDidLoad {
+    self.webView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:
+                               [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index"
+                                                                                      ofType:@"html"
+                                                                                 inDirectory:@"web"]]
+                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                           timeoutInterval:20.0]];
+
+	[self.view addSubview:self.splashView];
+}
+
+
 
 - (BOOL)webView:(UIWebView *)theWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 	NSURL *url = [request URL];
@@ -35,16 +40,29 @@
 		[[UIApplication sharedApplication] openURL:url];
 		return NO;
 	} else if ([[url scheme] isEqualToString:@"loaded"]) {
-		[self.view addSubview:webView];
-		[splashView removeFromSuperview];
+		[self.view addSubview:self.webView];
+		[self.splashView removeFromSuperview];
 		return NO;
 	}
 	return YES;
 }
 
-- (void)dealloc {
-	[webView release];
-	[super dealloc];
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self.webView loadRequest:[NSURLRequest requestWithURL:
+                               [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index"
+                                                                                      ofType:@"html"
+                                                                                 inDirectory:@"web"]]
+                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                           timeoutInterval:20.0]];
+}
+
+
+- (BOOL)shouldAutorotate {
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAll;
 }
 
 @end

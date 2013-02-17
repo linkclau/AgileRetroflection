@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface arotdViewController : UIViewController <UIWebViewDelegate> {
-	UIWebView *webView;
-	IBOutlet UIView *splashView;
+
 	
 }
+
+@property (nonatomic, strong) IBOutlet UIWebView *webView;
+@property (nonatomic, strong) IBOutlet UIView *splashView;
 
 @end
 

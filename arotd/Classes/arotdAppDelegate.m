@@ -19,10 +19,10 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    viewController = [[arotdViewController alloc] init];
     // Override point for customization after application launch.
 
     // Add the view controller's view to the window and display.
+    [self.window setRootViewController:self.viewController];
     [self.window addSubview:viewController.view];
     [self.window makeKeyAndVisible];
 
@@ -78,11 +78,6 @@
 }
 
 
-- (void)dealloc {
-    [viewController release];
-    [window release];
-    [super dealloc];
-}
 
 
 @end
